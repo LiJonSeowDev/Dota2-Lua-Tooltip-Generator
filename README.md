@@ -19,7 +19,7 @@
 ###### Timestamp feature is probably not for many people. But I personally use this with sublime's multi-line edit to remove records of older date when patching.
 
 
-## Installation
+## I. Installation
 I'm Referring to several directories as follows :
 
 - **"$GAME_HOME"** = "../game/dota_addons/ _@YOUR_ADDON_NAME_ /"
@@ -58,7 +58,7 @@ end
 
 ```
 
-## Execution / Running
+## II. Execution / Running
 To dump your KVs to tooltips, launch your map. Most likely you will need to pass the hero selection stage if you want to use date dumping (Basically needs to prepare both client and server for event listening to pass date)
 
 1. Launch Your Map, pause game if you need to. Ensure your event listeners are already active if you want timestamp. (In my test case this is after hero selection)
@@ -100,7 +100,7 @@ As referred to the details above, this will dump Ability, Items, and Unit KVs in
 
 Note : All these commands execute for default KV paths. if you wish to define your own KV path (i.e. specify the KV file to read, look into configurations and customizations
 
-## Customizations & Configurations
+## III. Customizations & Configurations
 1. You can easily override default definitions in the tooltip_dump_util.lua
 
 the following segments for example, specifies the default directories.
@@ -175,9 +175,9 @@ end
 .
 
 ```
-## Correctness checking
+## IV. Correctness checking
 you may use the link to check the dump's correctness :
 http://arhowk.github.io/
-## Disclaimer
+## V. Disclaimer
 You are to use this generator at your own risk. You are advised to create a backup of your addon_$language.txt file as insurance, and to avoid using the same dump name.
 
