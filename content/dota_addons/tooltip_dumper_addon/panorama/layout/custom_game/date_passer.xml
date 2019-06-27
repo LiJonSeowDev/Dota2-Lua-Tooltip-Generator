@@ -1,0 +1,6 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/date_passer.js" />
+    </scripts>
+    <Panel></Panel>
+</root>
