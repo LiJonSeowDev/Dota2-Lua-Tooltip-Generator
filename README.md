@@ -96,6 +96,16 @@ To dump your KVs to tooltips, launch your map. Most likely you will need to pass
       override_language_token [strLanguageToken]
    ```
 
+Aliased some commands :
+```
+tooltip_generate" : dumptooltip
+tooltip_generate_all" :dumptooltip_all
+tooltip_def_filename" :override_dump_filename
+tooltip_def_base_path" :override_dump_base_path
+tooltip_def_path" :override_dump_path
+tooltip_def_language" : override_language_token
+```
+
 
 
 _**Example Console commands :**_
