@@ -27,6 +27,12 @@ The base dir should specify all the way from drive ( e.g. like C:/Users/You/Desk
 It does create addon_english.txt, and its fine to use this name as first time generate, but I do not recommend overwriting on 2nd or 3rd generation (if you have edited them). Consider another placeholder name.
 
 ## I. Installation
+**_You can do a quick merge if you know what you are doing. The only potential existing file overwrites are custom_ui_manifest.xml and addon_game_mode.lua._**
+
+
+_________________________________________________________________________________________________________________________________
+Otherwise : 
+
 I'm Referring to several directories as follows :
 
 - **"$GAME_HOME"** = "../game/dota_addons/ _@YOUR_ADDON_NAME_ /"
@@ -66,7 +72,7 @@ end
 ```
 
 ## II. Execution / Running
-To dump your KVs to tooltips, launch your map. Most likely you will need to pass the hero selection stage if you want to use date dumping (Basically needs to prepare both client and server for event listening to pass date)
+To dump your KVs to tooltips, launch your map. Most likely you will need to pass the hero selection stage if you want to use date dumping (Basically needs to prepare both client and server for event listening to pass date).
 
 1. Launch Your Map, pause game if you need to. Ensure your event listeners are already active if you want timestamp. (In my test case this is after hero selection)
 2. Open your console, fire commands.
