@@ -1,11 +1,11 @@
 "use strict";
 var day_dict = {};
-day_dict[0] = "Sunday";
-day_dict[1] = "Monday";
-day_dict[2] = "Tuesday";
-day_dict[3] = "Wednesday";
-day_dict[4] = "Thursday";
-day_dict[5] = "Saturday";
+day_dict[0] = "Monday";
+day_dict[1] = "Tuesday";
+day_dict[2] = "Wednesday";
+day_dict[3] = "Thursday";
+day_dict[4] = "Saturday";
+day_dict[5] = "Sunday";
 day_dict[6] = "Sunday";
 
 function SendDateToServer( msg )
