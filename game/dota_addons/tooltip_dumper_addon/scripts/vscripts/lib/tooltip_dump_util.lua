@@ -28,6 +28,17 @@ Convars:RegisterCommand( "tooltip_def_base_path", function(...) return Tooltip_G
 Convars:RegisterCommand( "tooltip_def_path", function(...) return Tooltip_Generator:_DumpTooltip_path_override_console( ... ) end, "Specify the base_file_path and the file_name to override the entire path. 2 params (strBaseFilePath , strFileName)", FCVAR_CHEAT )
 Convars:RegisterCommand( "tooltip_def_language", function(...) return Tooltip_Generator:_DumpTooltip_language_token_override_console( ... ) end, "Specify the language_token. Does not affect filename ! language_token is referring to the KV for \"language\" in the tooltips file. 1 param - do not include escape char! (strLanguageToken)", FCVAR_CHEAT )
 
+
+function Tooltip_Generator:GenerateTabs(intNumberOfTabs , bAppendWithEOL)
+    local tabs = ""
+    for i=1, intNumberOfTabs do
+        tabs = tabs .. "\t"
+    end
+    if bAppendWithEOL then tabs = tabs .. "\n" end
+
+    return tabs
+end
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- [[ CONFIGURABLE DEFAULTS ]]
 -- [[ DEFAULTS - configure if you want ]]
@@ -95,22 +106,14 @@ Tooltip_Generator.dump_ability_note = true -- only does one note atm
 Tooltip_Generator.dump_ability_lore = true 
 Tooltip_Generator.dump_ability_description = true 
 
-function Tooltip_Generator:GenerateTabs(intNumberOfTabs , bAppendWithEOL)
-    local tabs = ""
-    for i=1, intNumberOfTabs do
-        tabs = tabs .. "\t"
-    end
-    if bAppendWithEOL then tabs = tabs .. "\n" end
 
-    return tabs
-end
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- [[ INITIALIZER FUNCTIONS ]]
 function Tooltip_Generator:Initialize(str_fileBasePath, str_fileName, language_token) -- Non-default directory use, in case you have iterations + change dir.
     if not str_fileBasePath then error("Empty file base path dir") end
     if not str_fileName then error("Empty file name") end
-    if not language_token then print("You have not specify a language_token ! - Defaulting to \"English\"") end
+    if not language_token then print("You have not specify a language_token ! - Defaulting to \""..Tooltip_Generator.default_LanguageToken.."\"") end
 
     Tooltip_Generator:Set_LanguageToken(language_token)
     Tooltip_Generator:Set_DumpPath(str_fileBasePath, str_fileName) 
@@ -121,7 +124,7 @@ end
 function Tooltip_Generator:Initialize_WithDefaultKV(str_fileBasePath, str_fileName, language_token)
     if not str_fileBasePath then error("Empty file base path dir") end
     if not str_fileName then error("Empty file name") end
-    if not language_token then print("You have not specify a language_token ! - Defaulting to \"English\"") end
+    if not language_token then print("You have not specify a language_token ! - Defaulting to \""..Tooltip_Generator.default_LanguageToken.."\"") end
 
     Tooltip_Generator.AbilityKV = LoadKeyValues(Tooltip_Generator.default_AbilityKV_path)
     Tooltip_Generator.ItemKV = LoadKeyValues(Tooltip_Generator.default_ItemKV_path)
@@ -156,7 +159,7 @@ function Tooltip_Generator:SetHeroKV(strPath) -- Relative FROM  - <Addon_GAME_Ho
     Tooltip_Generator.HeroKV = LoadKeyValues(strPath)
 end
 
-function Tooltip_Generator:Set_DumpPath(strBasePath, strFileName) -- the final and entire filepath to write the file [Relative from] 
+function Tooltip_Generator:Set_DumpPath(strBasePath, strFileName) -- the final and entire filepath to write the file [Relative from dota2.exe path | but can specify from drive like 'C:/.. or D:/..'] 
     if not strBasePath then error("Empty file base path dir") end
     if not strFileName then error("Empty file name") end    
     Tooltip_Generator.dump_file_base_path = strBasePath    
@@ -166,7 +169,10 @@ function Tooltip_Generator:Set_DumpPath(strBasePath, strFileName) -- the final a
     return Tooltip_Generator.dump_file_path
 end
 
-function Tooltip_Generator:Set_DumpBasePath(strPath) -- the base path without the file name to write the file [Relative from] - 
+-- Ends with '/' so :
+-- C:/User/XX/Desktop = wrong
+-- C:/User/XX/Desktop/ = correct
+function Tooltip_Generator:Set_DumpBasePath(strPath) -- the base path without the file name to write the file [Relative from dota2.exe path | but can specify from drive like 'C:/.. or D:/..'] 
     Tooltip_Generator.dump_file_base_path = strPath
     Tooltip_Generator.dump_file_path = Tooltip_Generator.dump_file_base_path .. Tooltip_Generator.dump_filename 
 
@@ -354,7 +360,7 @@ function Tooltip_Generator:DumpTooltip(bDumpAbility, bDumpItem, bDumpUnit, bDump
             local IsWillOverrideFile = bOverrideFile or true
             local IsWillAppendDateEOL = bAppend_CommentedDateBeforeEOL or false
 
-            local mode = "a+"
+            local mode = "a+" 
             local dump_queue = {}
             local queue_index = 2 -- Index 1 is defined below
 
