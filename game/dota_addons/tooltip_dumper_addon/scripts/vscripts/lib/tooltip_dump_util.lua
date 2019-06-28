@@ -106,6 +106,10 @@ Tooltip_Generator.dump_ability_note = true -- only does one note atm
 Tooltip_Generator.dump_ability_lore = true 
 Tooltip_Generator.dump_ability_description = true 
 
+Tooltip_Generator.dump_item_note = true -- only does one note atm 
+Tooltip_Generator.dump_item_lore = true 
+Tooltip_Generator.dump_item_description = true 
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -485,7 +489,6 @@ function Tooltip_Generator:DumpTooltips_AbilityKV(bAppend_CommentedDateBeforeEOL
             file:write(ability_description)
             print(ability_key_header) -- Replace with Write
             print(ability_title) -- Replace with Write
-            print(ability_description) -- Replace with Write
             
             if Tooltip_Generator.dump_ability_note then 
                 file:write(ability_note0)                
@@ -555,21 +558,20 @@ function Tooltip_Generator:DumpTooltips_ItemKV(bAppend_CommentedDateBeforeEOL)
             file:write(item_description)
             print(ability_key_header) -- Replace with Write
             print(item_title) -- Replace with Write
-            print(item_description) -- Replace with Write
             
-            if Tooltip_Generator.dump_ability_note then 
+            if Tooltip_Generator.dump_item_note then 
                 file:write(item_note0)                
                 print(item_note0)
             end
             
 
-            if Tooltip_Generator.dump_ability_lore then 
+            if Tooltip_Generator.dump_item_lore then 
                 file:write(item_lore)                
                 print(item_lore)    -- Replace with Write 
             end
 
 
-            if Tooltip_Generator.dump_ability_description then 
+            if Tooltip_Generator.dump_item_description then 
                 file:write(item_description)                
                 print(item_description) -- Replace with Write
             end
