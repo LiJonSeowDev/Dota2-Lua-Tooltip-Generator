@@ -20,6 +20,14 @@ Convars:RegisterCommand( "override_dump_base_path", function(...) return Tooltip
 Convars:RegisterCommand( "override_dump_path", function(...) return Tooltip_Generator:_DumpTooltip_path_override_console( ... ) end, "Specify the base_file_path and the file_name to override the entire path. 2 params (strBaseFilePath , strFileName)", FCVAR_CHEAT )
 Convars:RegisterCommand( "override_language_token", function(...) return Tooltip_Generator:_DumpTooltip_language_token_override_console( ... ) end, "Specify the language_token. Does not affect filename ! language_token is referring to the KV for \"language\" in the tooltips file. 1 param - do not include escape char! (strLanguageToken)", FCVAR_CHEAT )
 
+-- [[ Aliasing some functions ]]
+Convars:RegisterCommand( "tooltip_generate", function(...) return Tooltip_Generator:_DumpTooltip_console( ... ) end, "Dumps tooltip with general params. 6 params (bDumpAbility = f, bDumpItem = f, bDumpUnit = f, bDumpHeroes = f, bOverrideFile = t, bAppend_CommentedDateBeforeEOL = f). has default values. no override means append if exist ", FCVAR_CHEAT )
+Convars:RegisterCommand( "tooltip_generate_all", function(...) return Tooltip_Generator:_DumpTooltip_console_All( ... ) end, "Dumps all tooltips. 2 params ( bOverrideFile = t , bAppend_CommentedDateBeforeEOL = f ). has default values. no override means append if exist", FCVAR_CHEAT )
+Convars:RegisterCommand( "tooltip_def_filename", function(...) return Tooltip_Generator:_DumpTooltip_filename_override_console( ... ) end, "Overrides the filename. 1 param (strFileName)", FCVAR_CHEAT )
+Convars:RegisterCommand( "tooltip_def_base_path", function(...) return Tooltip_Generator:_DumpTooltip_base_path_override_console( ... ) end, "Overrides the file base path (without the file name). 1 param (strBaseFilePath)", FCVAR_CHEAT )
+Convars:RegisterCommand( "tooltip_def_path", function(...) return Tooltip_Generator:_DumpTooltip_path_override_console( ... ) end, "Specify the base_file_path and the file_name to override the entire path. 2 params (strBaseFilePath , strFileName)", FCVAR_CHEAT )
+Convars:RegisterCommand( "tooltip_def_language", function(...) return Tooltip_Generator:_DumpTooltip_language_token_override_console( ... ) end, "Specify the language_token. Does not affect filename ! language_token is referring to the KV for \"language\" in the tooltips file. 1 param - do not include escape char! (strLanguageToken)", FCVAR_CHEAT )
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- [[ CONFIGURABLE DEFAULTS ]]
 -- [[ DEFAULTS - configure if you want ]]
@@ -81,6 +89,7 @@ Tooltip_Generator.UnitConst = "\t\t\"" -- No key prefix
 Tooltip_Generator.HeroConst = "\t\t\"" -- No key prefix
 
 Tooltip_Generator.tabs = '\t\t\t\t\t' -- 5 Tabs spaced between key and value of the tooltip
+Tooltip_Generator.mid_length_tabs = Tooltip_Generator:GenerateTabs(7, false) -- alternate way to express
 Tooltip_Generator.time_stamp_spacer_tab = '\t\t\t\t\t\t\t\t\t\t' -- 9 tabs
 Tooltip_Generator.dump_ability_note = true -- only does one note atm 
 Tooltip_Generator.dump_ability_lore = true 
@@ -213,20 +222,29 @@ end
 function Tooltip_Generator:_DumpTooltip_console(cmdName, bDumpAbility, bDumpItem, bDumpUnit, bDumpHeroes, bOverrideFile, bAppend_CommentedDateBeforeEOL)
     -- [[PRE-processing and protecting parms]]
     -- Initialize Defaults, override if exists. (Need to convert string to bool so cant shorthand with if(x) )
-    local IsWillDumpAbility =  false
-    local IsWillDumpItem =  false
-    local IsWillDumpUnit =  false
-    local IsWillDumpHeroes =  false
-    local IsWillOverrideFile =  true
-    local IsWillAppendDateEOL =  false   
 
-    -- convert parms to lower case for easier check
-    local DumpAbility = string.lower(bDumpAbility)
-    local DumpItem = string.lower(bDumpItem)
-    local DumpUnit = string.lower(bDumpUnit)
-    local DumpHeroes = string.lower(bDumpHeroes)
-    local OverrideFile = string.lower(bOverrideFile)
-    local Append_CommentedDateBeforeEOL = string.lower(bAppend_CommentedDateBeforeEOL)
+    local IsWillDumpAbility =  function() if bDumpAbility then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpAbility) else return false end end
+    local IsWillDumpItem =  function() if bDumpItem then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpItem) else return false end end
+    local IsWillDumpUnit =  function() if bDumpUnit then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpUnit) else return false end end
+    local IsWillDumpHeroes =  function() if bDumpHeroes then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpHeroes) else return false end end
+    local IsWillOverrideFile =  function() if bOverrideFile then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bOverrideFile) else return true end end
+    local IsWillAppendDateEOL =  function() if bAppend_CommentedDateBeforeEOL then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bAppend_CommentedDateBeforeEOL) else return false end end
+
+    --[[ convert parms to lower case for easier check. also defaulted  
+    local DumpAbility = "false"
+    local DumpItem = "false"
+    local DumpUnit = "false"
+    local DumpHeroes = "false"
+    local OverrideFile = "true"
+    local Append_CommentedDateBeforeEOL = "false"
+    --[[
+
+    if bDumpAbility then DumpAbility = string.lower(bDumpAbility) end
+    if bDumpItem then DumpItem = string.lower(bDumpItem) end
+    if bDumpUnit then DumpUnit = string.lower(bDumpUnit) end
+    if bDumpHeroes then DumpHeroes = string.lower(bDumpHeroes) end
+    if bOverrideFile then OverrideFile = string.lower(bOverrideFile) end
+    if bAppend_CommentedDateBeforeEOL then Append_CommentedDateBeforeEOL = string.lower(bAppend_CommentedDateBeforeEOL) end
 
 
     if (DumpAbility == "true") or (DumpAbility ==  "t") or (DumpAbility == "y") or (DumpAbility == "yes") then IsWillDumpAbility = true end
@@ -241,10 +259,10 @@ function Tooltip_Generator:_DumpTooltip_console(cmdName, bDumpAbility, bDumpItem
     --elseif OverrideFile == "false" or "f" or "n" or "no" then end
     if (Append_CommentedDateBeforeEOL == "true") or (Append_CommentedDateBeforeEOL == "t") or (Append_CommentedDateBeforeEOL == "y") or (Append_CommentedDateBeforeEOL == "yes") then IsWillAppendDateEOL = true end
     --elseif Append_CommentedDateBeforeEOL == "false" or "f" or "n" or "no" then end
-
+    ]]
 
     -- [[  Call the dumper function  ]]
-    print(" Understood command. Calling DumpToolTip ".. tostring(DumpAbility),tostring(DumpItem),tostring(DumpUnit),tostring(DumpHeroes),tostring(OverrideFile),tostring(Append_CommentedDateBeforeEOL))
+    print(string.format(" Understood command. Calling DumpToolTip [ability_tooltip = %s] [item_tooltip = %s] [unit_tooltip = %s] [hero_tooltip = %s] [overwrite_if_exist = %s] [append_date = %s]  ", tostring(DumpAbility),tostring(DumpItem),tostring(DumpUnit),tostring(DumpHeroes),tostring(OverrideFile),tostring(Append_CommentedDateBeforeEOL)))
     Tooltip_Generator:DumpTooltip(IsWillDumpAbility, IsWillDumpItem, IsWillDumpUnit, IsWillDumpHeroes, IsWillOverrideFile, IsWillAppendDateEOL)
 
 end
@@ -252,22 +270,11 @@ end
 function Tooltip_Generator:_DumpTooltip_console_All(cmdName, bOverrideFile, bAppend_CommentedDateBeforeEOL)
     -- [[PRE-processing and protecting parms]]
     -- Initialize Defaults, override if exists. (Need to convert string to bool so cant shorthand with if(x) )
-    local IsWillOverrideFile =  true
-    local IsWillAppendDateEOL =  false   
-
-    -- convert parms to lower case for easier check
-    local OverrideFile = string.lower(bOverrideFile)
-    local Append_CommentedDateBeforeEOL = string.lower(bAppend_CommentedDateBeforeEOL)
-
-
-    if (OverrideFile == "true") or (OverrideFile ==  "t") or (OverrideFile == "y") or (OverrideFile == "yes") then IsWillOverrideFile = true end
-    --elseif OverrideFile == "false" or "f" or "n" or "no" then end
-    if (Append_CommentedDateBeforeEOL == "true") or (Append_CommentedDateBeforeEOL == "t") or (Append_CommentedDateBeforeEOL == "y") or (Append_CommentedDateBeforeEOL == "yes") then IsWillAppendDateEOL = true end
-    --elseif Append_CommentedDateBeforeEOL == "false" or "f" or "n" or "no" then end
-
+    local IsWillOverrideFile =  function() if bOverrideFile then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bOverrideFile) else return true end end
+    local IsWillAppendDateEOL =  function() if bAppend_CommentedDateBeforeEOL then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bAppend_CommentedDateBeforeEOL) else return false end end
 
     -- [[  Call the dumper function  ]]
-    print(" Understood command. Calling DumpToolTip (ALL) ".. tostring(DumpAbility),tostring(DumpItem),tostring(DumpUnit),tostring(DumpHeroes),tostring(OverrideFile),tostring(Append_CommentedDateBeforeEOL))
+    print(string.format(" Understood command. Calling DumpToolTip (ALL) - Ability,Item,Unit & Hero [overwrite_if_exist = %s] [append_date = %s]  ", tostring(DumpAbility),tostring(DumpItem),tostring(DumpUnit),tostring(DumpHeroes),tostring(OverrideFile),tostring(Append_CommentedDateBeforeEOL)))
     Tooltip_Generator:DumpTooltips_AllKV(IsWillOverrideFile, IsWillAppendDateEOL)
 end
 
@@ -313,7 +320,19 @@ function Tooltip_Generator:_DumpTooltip_language_token_override_console(cmdName,
     print(Tooltip_Generator.Header_BASE)
 end
 
+-- Not Nil Protected
+function Tooltip_Generator:__CONSOLE_string_to_bool_handler(strParam)
+    if not strParam then error("no parameters given") end
 
+    local s_param = string.lower(param)
+    if s_param == "true" or s_param == "t" or s_param == "y" or s_param =="yes" then 
+        s_param = true --convert to bool and return
+    elseif s_param == "false" or s_param == "f" or s_param == "n" or s_param =="no" then 
+        s_param = false -- convert to bool and return
+    end
+
+    return s_param
+end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
