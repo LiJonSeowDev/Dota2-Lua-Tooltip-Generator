@@ -49,7 +49,7 @@ This uses defaults, if you want to use customized parameters ( such as changing 
 -- The following needs to be added near the top.
 
 if IsInToolsMode() then
-	require( "lib/utils/tooltip_dump_util")
+	require( "lib/tooltip_dump_util")
 	Tooltip_Generator:Initialize_WithDefaultKV(  --> [Alternate Init] Tooltip_Generator:Initialize() CTRL+F FIND : '-- [[ INITIALIZER FUNCTIONS ]]'
 		"C:/Users/User_name1/Desktop/New folder/", -- Base_Directory. Ends with '/' If base is empty, the file will be created at the Dota2.exe directory
 		"addon_english_dump.txt", -- This is the filename. Try not to use the actual one. (You most likely do not want to overwrite yet.
