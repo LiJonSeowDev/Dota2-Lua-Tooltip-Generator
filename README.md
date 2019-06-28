@@ -1,5 +1,5 @@
 # Dota2-Lua-Tooltip-Generator - A tooltip pre-processing tool
-###### This is a very lightweight library which reads your KV and throws a tooltip file.
+###### This is a very lightweight library which reads your KV and throws a tooltip (addon_english.txt or addon_$language) file.
 
 **It Reads ( as required ) :**
 1. npc_abilities_custom
@@ -7,6 +7,10 @@
 3. npc_units_custom
 4. npc_heroes_custom
 5. **customized directory** * - (for segmentation)*
+
+**Then generates a text file with a specified path and filename.**
+
+_You should specify path from drive level (i.e. C:/ or D:/ )_
 
 **Supports :**
 - Ability special value dumping
@@ -16,8 +20,11 @@
 - KV #base nested declarations
 - optional timestamp marking 
 
-###### Timestamp feature is probably not for many people. But I personally use this with sublime's multi-line edit to remove records of older date when patching.
+Important Notes:
 
+The base dir should specify all the way from drive ( e.g. like C:/Users/You/Desktop/ ) If you do not specify, it will be found in dota2.exe directory (Not your addon game path ! )
+
+It does create addon_english.txt, and its fine to use this name as first time generate, but I do not recommend overwriting on 2nd or 3rd generation (if you have edited them). Consider another placeholder name.
 
 ## I. Installation
 I'm Referring to several directories as follows :
@@ -49,7 +56,7 @@ This uses defaults, if you want to use customized parameters ( such as changing 
 -- The following needs to be added near the top.
 
 if IsInToolsMode() then
-	require( "lib/tooltip_dump_util")
+	require( "lib/tooltip_dump_util") -- or wherever you want to put the tooltip_dump_util.lua
 	Tooltip_Generator:Initialize_WithDefaultKV(  --> [Alternate Init] Tooltip_Generator:Initialize() CTRL+F FIND : '-- [[ INITIALIZER FUNCTIONS ]]'
 		"C:/Users/User_name1/Desktop/New folder/", -- Base_Directory. Ends with '/' If base is empty, the file will be created at the Dota2.exe directory
 		"addon_english_dump.txt", -- This is the filename. Try not to use the actual one. (You most likely do not want to overwrite yet.
@@ -176,7 +183,7 @@ end
 
 ```
 ## IV. Correctness checking
-you may use the link to check the dump's correctness :
+you may use the link by arhowk to check the dump's correctness :
 http://arhowk.github.io/
 ## V. Disclaimer
 You are to use this generator at your own risk. You are advised to create a backup of your addon_$language.txt file as insurance, and to avoid using the same dump name.
