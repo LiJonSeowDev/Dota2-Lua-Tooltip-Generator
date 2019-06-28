@@ -1,6 +1,9 @@
 # Dota2-Lua-Tooltip-Generator - A tooltip pre-processing tool
 ###### This is a very lightweight library which reads your KV and throws a tooltip (addon_english.txt or addon_$language) file.
 
+Preview Dump from Holdout example addon:
+![alt text](https://i.imgur.com/L0rMG2X.png)
+
 **It Reads ( as required ) :**
 1. npc_abilities_custom
 2. npc_items_custom
