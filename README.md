@@ -2,7 +2,7 @@
 ###### This is a very lightweight library which reads your KV and throws a tooltip (addon_english.txt or addon_$language) file.
 
 Preview Dump from Holdout example addon:
-![alt text](https://i.imgur.com/L0rMG2X.png)
+![alt text](https://i.imgur.com/qnqyHKA.png)
 
 **It Reads ( as required ) :**
 1. npc_abilities_custom
