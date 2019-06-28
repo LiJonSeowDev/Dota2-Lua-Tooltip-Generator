@@ -615,7 +615,7 @@ function Tooltip_Generator:DumpTooltips_UnitKV(bAppend_CommentedDateBeforeEOL)
     print(TitleHeader) -- Replace with Write
     file:write(TitleHeader)
     for npc_unit_name,tAttributes in pairs(Tooltip_Generator.UnitKV) do
-        if not (ability == "Version") then
+        if not (npc_unit_name == "Version") then
             local name_dump = Tooltip_Generator.UnitConst .. npc_unit_name .. "\"".. Tooltip_Generator.tabs .."\"" .. "!UNIT_NAME" .. "\""  .. per_line_trailer
             print(name_dump) -- Replace with Write
             file:write(name_dump)            
@@ -642,7 +642,7 @@ function Tooltip_Generator:DumpTooltips_HeroKV(bAppend_CommentedDateBeforeEOL)
     print(TitleHeader) -- Replace with Write
     file:write(TitleHeader)
     for npc_hero_name,tAttributes in pairs(Tooltip_Generator.HeroKV) do
-        if not (ability == "Version") then
+        if not (npc_hero_name == "Version") then
             local name_dump = Tooltip_Generator.HeroConst .. npc_hero_name .. "\"".. Tooltip_Generator.tabs .."\"" .. "!HERO_NAME" .. "\""  .. per_line_trailer
             print(name_dump) -- Replace with Write
             file:write(name_dump)            
