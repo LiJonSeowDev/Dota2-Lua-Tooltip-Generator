@@ -64,11 +64,11 @@ To dump your KVs to tooltips, launch your map. Most likely you will need to pass
 1. Launch Your Map, pause game if you need to. Ensure your event listeners are already active if you want timestamp. (In my test case this is after hero selection)
 2. Open your console, fire commands.
 3. Available commands are :
-   - **dumptooltip** -->  _Dumps tooltip with general params. 6 params. Has default values. No override means append if exist._
+   - **dumptooltip** -->  _Dumps tooltip with general params. 6 params. No override means append if exist._
    ```
      dumptooltip [bDumpAbility = f, bDumpItem = f, bDumpUnit = f, bDumpHeroes = f, bOverrideFile = t, bAppend_CommentedDateBeforeEOL = f)]
    ```
-   - **dumptooltip_all** --> _Dumps all tooltips. 2 params. Has default values. No override means append if exist_
+   - **dumptooltip_all** --> _Dumps all tooltips. 2 params. No override means append if exist_
    ```
      dumptooltip_all [ bOverrideFile = t , bAppend_CommentedDateBeforeEOL = f]
    ```
