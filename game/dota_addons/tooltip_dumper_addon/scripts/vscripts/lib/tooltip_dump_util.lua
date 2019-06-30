@@ -342,6 +342,8 @@ function Tooltip_Generator:__CONSOLE_string_to_bool_handler(strParam, bdefault)
         s_param = true --convert to bool and return
     elseif s_param == "false" or s_param == "f" or s_param == "n" or s_param =="no" then 
         s_param = false -- convert to bool and return
+    else
+        return bdefault
     end
 
     return s_param
