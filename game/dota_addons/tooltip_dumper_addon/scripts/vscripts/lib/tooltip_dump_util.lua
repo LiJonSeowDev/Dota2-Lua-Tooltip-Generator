@@ -489,7 +489,6 @@ function Tooltip_Generator:DumpTooltips_AbilityKV(bAppend_CommentedDateBeforeEOL
             
             file:write(ability_key_header)
             file:write(ability_title)
-            file:write(ability_description)
             print(ability_key_header) -- Replace with Write
             print(ability_title) -- Replace with Write
             
@@ -558,7 +557,6 @@ function Tooltip_Generator:DumpTooltips_ItemKV(bAppend_CommentedDateBeforeEOL)
             
             file:write(item_key_header)
             file:write(item_title)
-            file:write(item_description)
             print(ability_key_header) -- Replace with Write
             print(item_title) -- Replace with Write
             
