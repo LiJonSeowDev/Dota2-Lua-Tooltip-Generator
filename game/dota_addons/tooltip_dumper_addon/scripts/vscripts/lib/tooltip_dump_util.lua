@@ -518,7 +518,7 @@ function Tooltip_Generator:DumpTooltips_AbilityKV(bAppend_CommentedDateBeforeEOL
                     for index_special, tSpecial_table in pairs(hTableAbilitySpecial) do
                         for special_key, special_value in pairs(tSpecial_table) do
                             if special_key ~= "var_type" then
-                                local tooltip = Tooltip_Generator.AbilityConst .. ability .. "_" .. special_key .."\"".. Tooltip_Generator.tabs .."\"" .. Tooltip_Generator:_ParseSpecials(special_value) .. ": \""
+                                local tooltip = Tooltip_Generator.AbilityConst .. ability .. "_" .. special_key .."\"".. Tooltip_Generator.tabs .."\"" .. string.upper(special_key) .. ": \""
                                 local tooltip = tooltip .. per_line_trailer
                                 file:write(tooltip)
                                 print(tooltip) -- Replace with Write
@@ -586,7 +586,7 @@ function Tooltip_Generator:DumpTooltips_ItemKV(bAppend_CommentedDateBeforeEOL)
                     for index_special, tSpecial_table in pairs(hTableAbilitySpecial) do
                         for special_key, special_value in pairs(tSpecial_table) do
                             if special_key ~= "var_type" then
-                                local tooltip = Tooltip_Generator.AbilityConst .. item .. "_" .. special_key .."\"".. Tooltip_Generator.tabs .."\"" .. Tooltip_Generator:_ParseSpecials(special_value) .. ": \""
+                                local tooltip = Tooltip_Generator.AbilityConst .. item .. "_" .. special_key .."\"".. Tooltip_Generator.tabs .."\"" .. string.upper(special_key) .. ": \""
                                 local tooltip = tooltip .. per_line_trailer
                                 file:write(tooltip)
                                 print(tooltip) -- Replace with Write
