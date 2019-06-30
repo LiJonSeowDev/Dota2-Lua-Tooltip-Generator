@@ -1,7 +1,7 @@
 # Dota2-Lua-Tooltip-Generator - A tooltip pre-processing tool
 ###### This is a very lightweight library which reads your KV and throws a tooltip (addon_english.txt or addon_$language) file.
 
-Preview Dump from Holdout example addon:
+Preview Dump from Holdout example addon (Screenshot slightly outdated - Actually specialValue will be shown automatically if the key follows the naming convention. It doesn't need to be shown explicitly like in the image. So I have patched to fix it:
 ![alt text](https://i.imgur.com/TiT1l8B.png)
 
 **It Reads ( as required ) :**
