@@ -233,12 +233,12 @@ function Tooltip_Generator:_DumpTooltip_console(cmdName, bDumpAbility, bDumpItem
     -- [[PRE-processing and protecting parms]]
     -- Initialize Defaults, override if exists. (Need to convert string to bool so cant shorthand with if(x) )
 
-    local IsWillDumpAbility =  function() if bDumpAbility then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpAbility) else return false end end
-    local IsWillDumpItem =  function() if bDumpItem then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpItem) else return false end end
-    local IsWillDumpUnit =  function() if bDumpUnit then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpUnit) else return false end end
-    local IsWillDumpHeroes =  function() if bDumpHeroes then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpHeroes) else return false end end
-    local IsWillOverrideFile =  function() if bOverrideFile then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bOverrideFile) else return true end end
-    local IsWillAppendDateEOL =  function() if bAppend_CommentedDateBeforeEOL then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bAppend_CommentedDateBeforeEOL) else return false end end
+    local IsWillDumpAbility = Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpAbility, false)
+    local IsWillDumpItem = Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpItem, false)
+    local IsWillDumpUnit = Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpUnit, false)
+    local IsWillDumpHeroes =  Tooltip_Generator:__CONSOLE_string_to_bool_handler(bDumpHeroes, false) 
+    local IsWillOverrideFile =  Tooltip_Generator:__CONSOLE_string_to_bool_handler(bOverrideFile, true)
+    local IsWillAppendDateEOL =  Tooltip_Generator:__CONSOLE_string_to_bool_handler(bAppend_CommentedDateBeforeEOL, false)
 
     --[[ convert parms to lower case for easier check. also defaulted  
     local DumpAbility = "false"
@@ -272,7 +272,7 @@ function Tooltip_Generator:_DumpTooltip_console(cmdName, bDumpAbility, bDumpItem
     ]]
 
     -- [[  Call the dumper function  ]]
-    print(string.format(" Understood command. Calling DumpToolTip [ability_tooltip = %s] [item_tooltip = %s] [unit_tooltip = %s] [hero_tooltip = %s] [overwrite_if_exist = %s] [append_date = %s]  ", tostring(DumpAbility),tostring(DumpItem),tostring(DumpUnit),tostring(DumpHeroes),tostring(OverrideFile),tostring(Append_CommentedDateBeforeEOL)))
+    print(string.format(" Understood command. Calling DumpToolTip [ability_tooltip = %s] [item_tooltip = %s] [unit_tooltip = %s] [hero_tooltip = %s] [overwrite_if_exist = %s] [append_date = %s]  ", tostring(IsWillDumpAbility),tostring(IsWillDumpItem),tostring(IsWillDumpUnit),tostring(IsWillDumpHeroes),tostring(IsWillOverrideFile),tostring(IsWillAppendDateEOL)))
     Tooltip_Generator:DumpTooltip(IsWillDumpAbility, IsWillDumpItem, IsWillDumpUnit, IsWillDumpHeroes, IsWillOverrideFile, IsWillAppendDateEOL)
 
 end
@@ -280,11 +280,11 @@ end
 function Tooltip_Generator:_DumpTooltip_console_All(cmdName, bOverrideFile, bAppend_CommentedDateBeforeEOL)
     -- [[PRE-processing and protecting parms]]
     -- Initialize Defaults, override if exists. (Need to convert string to bool so cant shorthand with if(x) )
-    local IsWillOverrideFile =  function() if bOverrideFile then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bOverrideFile) else return true end end
-    local IsWillAppendDateEOL =  function() if bAppend_CommentedDateBeforeEOL then Tooltip_Generator:__CONSOLE_string_to_bool_handler(bAppend_CommentedDateBeforeEOL) else return false end end
+    local IsWillOverrideFile =  Tooltip_Generator:__CONSOLE_string_to_bool_handler(bOverrideFile, true)
+    local IsWillAppendDateEOL =  Tooltip_Generator:__CONSOLE_string_to_bool_handler(bAppend_CommentedDateBeforeEOL, false)
 
     -- [[  Call the dumper function  ]]
-    print(string.format(" Understood command. Calling DumpToolTip (ALL) - Ability,Item,Unit & Hero [overwrite_if_exist = %s] [append_date = %s]  ", tostring(DumpAbility),tostring(DumpItem),tostring(DumpUnit),tostring(DumpHeroes),tostring(OverrideFile),tostring(Append_CommentedDateBeforeEOL)))
+    print(string.format(" Understood command. Calling DumpToolTip (ALL) - Ability,Item,Unit & Hero [overwrite_if_exist = %s] [append_date = %s]  ", "true", "true", "true", "true", tostring(IsWillOverrideFile),tostring(IsWillAppendDateEOL)))
     Tooltip_Generator:DumpTooltips_AllKV(IsWillOverrideFile, IsWillAppendDateEOL)
 end
 
@@ -331,10 +331,13 @@ function Tooltip_Generator:_DumpTooltip_language_token_override_console(cmdName,
 end
 
 -- Not Nil Protected
-function Tooltip_Generator:__CONSOLE_string_to_bool_handler(strParam)
-    if not strParam then error("no parameters given") end
+function Tooltip_Generator:__CONSOLE_string_to_bool_handler(strParam, bdefault)
+    print(tostring(strParam))
+    if not strParam then 
+        return bdefault
+    end
 
-    local s_param = string.lower(param)
+    local s_param = string.lower(strParam)
     if s_param == "true" or s_param == "t" or s_param == "y" or s_param =="yes" then 
         s_param = true --convert to bool and return
     elseif s_param == "false" or s_param == "f" or s_param == "n" or s_param =="no" then 
